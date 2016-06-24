@@ -1,5 +1,6 @@
 /*
-IR DEMO
+IR Code Analyse
+
 https://arduino-info.wikispaces.com/IR-RemoteControl
 
 */
@@ -19,41 +20,67 @@ void setup()
 
 void loop() {
   if (irrecv.decode(&results)) {
-    Serial.print("VALUE-1 - ");
-    Serial.print(results.value, HEX);
+    Serial.print("Button - ");
+    Serial.print(results.value, HEX); // print results as HEX
+    //Serial.print(" - ");
+    //Serial.print(results.value); // print results as decimal
     Serial.println("");
-    Serial.println("VALUE-2 - ");
     irrecv.resume(); // Receive the next value
   }
 }
 
-*/
+/*
 Obi Fernbedienungscodes RGB Lichtschlange:
 
 Knoepfe von rechts nach links
-VALUE-1 - FFC03F
-VALUE-1 - FF40BF
-VALUE-1 - FF807F
-VALUE-1 - FF00FF
-VALUE-1 - FFE01F
-VALUE-1 - FF609F
-VALUE-1 - FFA05F
-VALUE-1 - FF20DF
-VALUE-1 - FFD02F
-VALUE-1 - FF50AF
-VALUE-1 - FF906F
-VALUE-1 - FF10EF
-VALUE-1 - FFF00F
-VALUE-1 - FF708F
-VALUE-1 - FFB04F
-VALUE-1 - FF30CF
-VALUE-1 - FFC837
-VALUE-1 - FF48B7
-VALUE-1 - FFFFFFFF
-VALUE-1 - FF8877
-VALUE-1 - FF08F7
-VALUE-1 - FFE817
-VALUE-1 - FF6897
-VALUE-1 - FFA857
-VALUE-1 - FF28D7
+ON - FFC03F
+OFF - FF40BF
+Dimmen - FF807F
+Heller - FF00FF
+Weiss - FFE01F
+Blau - FF609F
+Gruen - FFA05F
+Rot - FF20DF
+FLASH - FFD02F
+Blau 1 - FF50AF
+Gruen 1 - FF906F
+Rot 1 - FF10EF
+STROBE - FFF00F
+Blau 2 - FF708F
+Gruen 2 - FFB04F
+Orange 2 - FF30CF
+FADE - FFC837
+Blau 3 - FF48B7
+Dunkelgruen - FF8877
+Orange/Gelb - FF08F7
+SMOOTH - FFE817
+Violett - FF6897
+Hellblau - FFA857
+Gelb - FF28D7
+
+=====================
+Arduino FB codes
+
+AUS - FFA25D
+Mode - FF629D
+Mute - FFE21D
+Play/Pause - FF22DD
+Rew - FF02FD
+Fwd - FFC23D
+EQ - FFE01F
+Leise - FFA857
+Lauter - FF906F
+Num 0 - FF6897
+Random - FF9867
+U/SD - FFB04F
+Num 1 - FF30CF
+Num 2 - FF18E7
+Num 3 - FF7A85
+Num 4 - FF10EF
+Num 5 - FF38C7
+Num 6 - FF5AA5
+Num 7 - FF42BD
+Num 8 - FF4AB5
+Num 9 - FF52AD
+
 */
