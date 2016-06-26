@@ -10,7 +10,7 @@ function added:
 */
 #include <IRremote.h>
 
-int RECV_PIN = 9;
+int RECV_PIN = 3;
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 
@@ -19,6 +19,13 @@ decode_results results;
 #define dataPin A2
 #define statled 13
 
+int redPin = 11;
+int bluePin = 9;
+int greenPin = 10;
+int FADESPEED = 5;
+// uncomment if your RGB LEDs works with Common Anode
+//#define COMMON_ANODE
+
 byte delays = 500;
 byte data = 0;
 byte leds;
@@ -26,12 +33,16 @@ byte leds;
 void setup()
 {
   Serial.begin(9600);
+  pinMode(redPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
   pinMode(latchPin,OUTPUT);
   pinMode(clockPin,OUTPUT);
   pinMode(dataPin,OUTPUT);
   pinMode(statled,OUTPUT);
   irrecv.enableIRIn();
   alloff();
+  setColor(0,0,0);
 }
 
 void loop()
@@ -86,18 +97,61 @@ void translateIR()
       Serial.println("Random Play 100 Times - Button Play");
       for (int i=0;i<=100;i++)
       {
-       // if (irrecv.decode(&results)) {
-         // switch(results.value) {
-           //case 0xFFA25D:
-           //   break;
             singlerandom();
-          //irrecv.resume();
-          //}
-        //}
-        //delay(1000);
       }
+      break;
+    
+    case 0xFF42BD:
+      Serial.println("blink 6 times - Button7");
+      blinkall();
+      break;
+      
+    case 0xFF4AB5:
+      Serial.println("fade RGB - Button8");
+      fadeRGB();
+      setColor(0,0,0);
+      break;
+      
   }
   digitalWrite(statled,LOW);
+}
+
+
+// smooth fade RGB LED
+void fadeRGB()
+{
+  int r, g, b;
+ 
+  // fade from blue to violet
+  for (r = 0; r < 256; r++) { 
+    analogWrite(redPin, r);
+    delay(FADESPEED);
+  } 
+  // fade from violet to red
+  for (b = 255; b > 0; b--) { 
+    analogWrite(bluePin, b);
+    delay(FADESPEED);
+  } 
+  // fade from red to yellow
+  for (g = 0; g < 256; g++) { 
+    analogWrite(greenPin, g);
+    delay(FADESPEED);
+  } 
+  // fade from yellow to green
+  for (r = 255; r > 0; r--) { 
+    analogWrite(redPin, r);
+    delay(FADESPEED);
+  } 
+  // fade from green to teal
+  for (b = 0; b < 256; b++) { 
+    analogWrite(bluePin, b);
+    delay(FADESPEED);
+  } 
+  // fade from teal to blue
+  for (g = 255; g > 0; g--) { 
+    analogWrite(greenPin, g);
+    delay(FADESPEED);
+  }
 }
 
 // function select 1 programm per random
@@ -125,11 +179,29 @@ void singlerandom()
   {
     updownLEDs();
   }
+  else if (c == 5)
+  {
+    blinkall();
+  }
+  else if (c == 6)
+  {
+    fadeRGB();
+  }
   else
   {
     runLEDs();
   }
   
+}
+
+// function blink all LEDs 6 times
+void blinkall()
+{
+  for (int i=0;i<=5;i++)
+  {
+    allon();
+    delay(1000);
+  }
 }
 
 // function switch all LEDs off
@@ -229,5 +301,17 @@ void shiftWrite(int desiredPin, boolean desiredState)
   shiftOut(dataPin,clockPin,MSBFIRST,data);
   digitalWrite(latchPin,HIGH);
   digitalWrite(latchPin,LOW);
+}
+
+void setColor(int red, int green, int blue)
+{
+  /*
+  red = 255 - red;
+  green = 255 - green;
+  blue = 255 - blue;
+  */
+  analogWrite(redPin, red);
+  analogWrite(greenPin, green);
+  analogWrite(bluePin, blue);
 }
 
