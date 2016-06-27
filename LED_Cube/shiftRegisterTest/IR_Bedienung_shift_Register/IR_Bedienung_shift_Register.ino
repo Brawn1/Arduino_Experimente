@@ -22,7 +22,9 @@ decode_results results;
 int redPin = 11;
 int bluePin = 9;
 int greenPin = 10;
-int FADESPEED = 5;
+
+int FADESPEED = 5; //change color speed
+
 // uncomment if your RGB LEDs works with Common Anode
 //#define COMMON_ANODE
 
@@ -33,9 +35,9 @@ byte leds;
 void setup()
 {
   Serial.begin(9600);
-  pinMode(redPin, OUTPUT);
-  pinMode(bluePin, OUTPUT);
-  pinMode(greenPin, OUTPUT);
+  pinMode(redPin,OUTPUT);
+  pinMode(bluePin,OUTPUT);
+  pinMode(greenPin,OUTPUT);
   pinMode(latchPin,OUTPUT);
   pinMode(clockPin,OUTPUT);
   pinMode(dataPin,OUTPUT);
@@ -97,7 +99,7 @@ void translateIR()
       Serial.println("Random Play 100 Times - Button Play");
       for (int i=0;i<=100;i++)
       {
-            singlerandom();
+        singlerandom();
       }
       break;
     
@@ -107,18 +109,15 @@ void translateIR()
       break;
       
     case 0xFF4AB5:
-      Serial.println("fade RGB - Button8");
-      fadeRGB();
-      setColor(0,0,0);
+      //Serial.println("fade RGB - Button8");
+      fadergbled();
       break;
-      
   }
   digitalWrite(statled,LOW);
 }
 
-
 // smooth fade RGB LED
-void fadeRGB()
+void fadergbled()
 {
   int r, g, b;
  
@@ -152,13 +151,27 @@ void fadeRGB()
     analogWrite(greenPin, g);
     delay(FADESPEED);
   }
+  setColor(0,0,0);
+}
+
+void setColor(int red, int green, int blue)
+{
+  /*
+  red = 255 - red;
+  green = 255 - green;
+  blue = 255 - blue;
+  */
+  analogWrite(redPin, red);
+  analogWrite(greenPin, green);
+  analogWrite(bluePin, blue);
 }
 
 // function select 1 programm per random
 void singlerandom()
 {
   int c;
-  c = random(6);
+  c = 0;
+  c = random(7);
   if (c == 0)
   { 
     allon();
@@ -185,7 +198,7 @@ void singlerandom()
   }
   else if (c == 6)
   {
-    fadeRGB();
+    fadergbled();
   }
   else
   {
@@ -303,15 +316,4 @@ void shiftWrite(int desiredPin, boolean desiredState)
   digitalWrite(latchPin,LOW);
 }
 
-void setColor(int red, int green, int blue)
-{
-  /*
-  red = 255 - red;
-  green = 255 - green;
-  blue = 255 - blue;
-  */
-  analogWrite(redPin, red);
-  analogWrite(greenPin, green);
-  analogWrite(bluePin, blue);
-}
 
