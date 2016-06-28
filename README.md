@@ -1,2 +1,4 @@
 # Arduino_Experimente
-Meine kleine Welt mit dem Arduino UNO und NANO
+
+Hier liegen meine Projekte und Snippets, die ich mit dem *Arduino UNO* und 
+*Nano* Ausarbeite.
