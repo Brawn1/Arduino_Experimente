@@ -138,3 +138,4 @@ Fernbedienung länger gedrückt wird.
 ## Quellen
 
 * [Arduino-info IR-RemoteControl](https://arduino-info.wikispaces.com/IR-RemoteControl)
+* [IRremote Bibliothek](https://github.com/z3t0/Arduino-IRremote)
