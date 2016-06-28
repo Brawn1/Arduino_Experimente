@@ -44,7 +44,7 @@ int STATLED = 13;
 ```
 
 
-```
+```Arduino
 void setup()
 {
   Serial.begin(9600);
@@ -69,7 +69,7 @@ void loop() {
 
 ### Der ganze Sketch (Code)
 
-```
+```Arduino
 /*
 IR Code Auslesen
 
