@@ -6,7 +6,7 @@
 
 
 
-[![RGB Running Video](https://i.ytimg.com/vi/ROpkROSD6RU/2.jpg?time=1467153739202)](https://youtu.be/ROpkROSD6RU)
+[![Arduino UNO RGB Video](https://i.ytimg.com/vi/ROpkROSD6RU/2.jpg?time=1467153739202)](https://youtu.be/ROpkROSD6RU)
 
 
 ## Sketch (Code)
