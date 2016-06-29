@@ -15,9 +15,20 @@
 ![Bild Schaltung im Betrieb](doku/bild_schaltung_3.jpg)
 
 
+* Schaltung in Aktion
+
+[![Arduino UNO DS18B20 Video](https://i.ytimg.com/vi/lkTJRRQ38B0/default.jpg?v=5774239f&sqp=CJDI0LsF&rs=AOn4CLDbyizEpxnX8qdu7an__HynPlIdBg)](https://youtu.be/lkTJRRQ38B0)
+
+* Test mit einem iframe
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/lkTJRRQ38B0" frameborder="0" allowfullscreen></iframe>
+
 ## Sketch (Code)
 
-Dieser Code ist gut Dokumentiert und somit muss man nicht mehr viel dazu Schreiben.
+Dieser Code ist gut Kommentiert und somit muss man nicht mehr viel dazu Schreiben.
+
+Es kann auch mit mehreren DS18B20 / DS18S20 verwendet werden.
+
 
 ```Arduino
 /*
