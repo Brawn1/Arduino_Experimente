@@ -1,41 +1,49 @@
 /*
-  Dieses Projekt soll den Raspberry Pi bei einfachen Messaufgaben
-  Abloesen.
-  Somit ist es moeglich, die Sensoren guenstiger und Robuster zu entwickeln.
+  Temperatur Sensoren DS18B20 bzw. DS18S20 mit SensorID Auslesen.
+  Der Wert wird bereits in Grad Celsius umgerechnet.
+  
+  Bailey 2016
 */
+
+// Bibliotheken laden
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-// Pin für DS18B20 definieren Arduino D2
+// Pin für DS18B20 definieren Arduino
 #define DS18B20_PIN 4
 
-// alle x Sekunden messen
+// alle x Millisekunden messen
 int mtime = 10000;
-// LED anzeige auf folgendem Port
+// LED anzeige auf folgendem Port (somit sieht man, wann
+// die Messung erfolgt
 int ledport = 13;
 
 // OneWire Referenz setzen
 OneWire oneWire(DS18B20_PIN);
 
-// DS18B20 initialisieren
+// DS18B20/DS18S20 initialisieren
 DallasTemperature sensors(&oneWire);
 DeviceAddress tempDeviceAddress;
 void setup() {
   // Serielle Ausgabe starten 
   Serial.begin(9600);
-  // DS18B20 starten
+  // DS18B20/DS18S20 starten
   sensors.begin();
-  pinMode(ledport,OUTPUT);
+  pinMode(ledport, OUTPUT);
 }
 
 void loop() {
-  digitalWrite(ledport,HIGH);
+  // Starten der Messung LED einschalten
+  digitalWrite(ledport, HIGH);
   // Temperatursensor auslesen
-  sensors.requestTemperatures(); 
+  sensors.requestTemperatures();
   for(byte i=0;i<sensors.getDeviceCount();i++){
     sensors.getAddress(tempDeviceAddress, i);
+    // funktion Aufrufen und UUID inkl. Temperatur ueber die 
+    // Serielle Schnittstelle ausgeben.
     serialout_temperature(getuuid(tempDeviceAddress),sensors.getTempCByIndex(i));  
   }
+  // LED am Ende wieder abschalten
   digitalWrite(ledport,LOW);
   delay(mtime);
 }
@@ -49,6 +57,7 @@ void serialout_temperature(byte devaddr,float temp) {
   Serial.print("\n");
 }
 
+// Sensoruuid Ausgeben
 int getuuid(DeviceAddress deviceAddress)
 {
   for (uint8_t i = 0; i < 8; i++)
