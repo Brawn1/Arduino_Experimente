@@ -14,6 +14,11 @@ Fertig sieht es wie auf dem Foto aus.
 
 ![Foto RGB Schaltung](doku/foto_schaltung.jpg)
 
+* Video zu dieser Schaltung
+
+[![Arduino UNO RGB Video](https://i.ytimg.com/vi/ROpkROSD6RU/2.jpg?time=1467153739202)](https://youtu.be/ROpkROSD6RU)
+
+
 ## Sketch (Code)
 
 * Globale Pin einstellungen und falls die RGB LED *COMMON_ANODE* verwendet,
@@ -185,6 +190,3 @@ void setColor(int red, int green, int blue)
 }
 ```
 
-* Dieses Video Demonstriert wie das Programm Abläuft.
-
-[![Arduino UNO RGB Video](https://i.ytimg.com/vi/ROpkROSD6RU/2.jpg?time=1467153739202)](https://youtu.be/ROpkROSD6RU)
