@@ -6,6 +6,7 @@ Bei diesem Experiment Steuern wir die RGB LED am Arduino Uno.
 
 Wie am Schaltplan dargestellt, Verbinden wir die Pins mit dem Arduino Uno
 auf die Pins 9,10,11 mit einem Wiederstand von 1000 Ohm.
+
 Die GND verbinden wir direkt mit dem Arduino.
 
 ![RGB Schaltplan](doku/arduino_schaltplan.png)
@@ -22,7 +23,7 @@ Fertig sieht es wie auf dem Foto aus.
 ## Sketch (Code)
 
 * Globale Pin einstellungen und falls die RGB LED *COMMON_ANODE* verwendet,
-kann man diese Auskommentieren.
+sollte man *#define COMMON_ANODE* aktivieren.
 
 ```Arduino
 int redPin = 11;
