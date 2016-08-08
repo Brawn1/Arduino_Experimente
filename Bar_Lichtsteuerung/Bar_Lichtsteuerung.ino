@@ -7,7 +7,7 @@
  Falls der Raum Leer ist, sollten alle Lichter abgeschaltet werden.
  
  Zu Steuernde Elemente:
- * 5m RGB LEDs hinter den Gaesern
+ * 5m RGB LEDs hinter den Gläsern
  * Halogen Beleuchtung bei den Glaesern in der Bar
  * Halogen Beleuchtung Bar Innenbereich
  * Halogen Beleuchtung Bar Aussenbereich
