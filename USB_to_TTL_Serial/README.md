@@ -1,6 +1,7 @@
 # Mit einem Arduino eine USB-to-TTL Serielle Verbindung erstellen.
 
 Bei diesem Experiment machen wir aus einem Arduino eine USB zu Seriell Verbindungs Adapter.
+Der Vorteil ist das es mit 3V bis 5V auf den Seriellen Ports Arbeiten kann.
 
 ## Verdrahtung
 
