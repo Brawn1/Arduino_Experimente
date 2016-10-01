@@ -132,7 +132,7 @@ Num 8 - FF4AB5
 Num 9 - FF52AD
 ```
 
-Wenn der Code *FFFFFF* Angezeigt wird, bedeutet dies Repeat und entsteht falls die 
+Wenn der Code *FFFFFF* Angezeigt wird, bedeutet dies Repeat und entsteht falls die Taste auf der
 Fernbedienung länger gedrückt wird.
 
 ## Quellen
