@@ -19,7 +19,7 @@ Und schalten einen Widerstand von 4,7kOhm zwischen 3.3V und dem Kommunikationspi
 
 * Schaltung in Aktion
 
-[![Arduino UNO DS18B20 Video](https://i.ytimg.com/vi/lkTJRRQ38B0/default.jpg?v=5774239f&sqp=CJDI0LsF&rs=AOn4CLDbyizEpxnX8qdu7an__HynPlIdBg)](https://youtu.be/lkTJRRQ38B0)
+[![Arduino UNO DS18B20 Video](https://i.ytimg.com/vi/lkTJRRQ38B0/1.jpg?time=1475334935776)](https://youtu.be/lkTJRRQ38B0)
 
 ## Sketch (Code)
 
