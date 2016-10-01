@@ -4,7 +4,9 @@
 
 ## Schaltung
 
+Wie in der Darstellung Abgebildet verbinden wir den Sensor mit unserem Arduino.
 
+Und schalten einen Widerstand von 4,7kOhm zwischen 3.3V und dem Kommunikationspin.
 
 ![Arduino Schaltplan](doku/schaltplan.png)
 
@@ -18,10 +20,6 @@
 * Schaltung in Aktion
 
 [![Arduino UNO DS18B20 Video](https://i.ytimg.com/vi/lkTJRRQ38B0/default.jpg?v=5774239f&sqp=CJDI0LsF&rs=AOn4CLDbyizEpxnX8qdu7an__HynPlIdBg)](https://youtu.be/lkTJRRQ38B0)
-
-* Test mit einem iframe
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/lkTJRRQ38B0" frameborder="0" allowfullscreen></iframe>
 
 ## Sketch (Code)
 
