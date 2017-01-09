@@ -34,6 +34,8 @@
  * SW_Up = Pin1
  * SW_Down = Pin0
  * 
+ * Info:
+ * Falls ein anderer Arduino Kontroller verwendet wird, muss man die Pins anpassen.
  * 
  * MIT License:
  * Copyright (c) 2016 Günter Bailey
@@ -51,9 +53,25 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * 
+ * MIT Lizenz in Deutsch:
+ * Copyright (c) 2016 Günter Bailey
+ * 
+ * Hiermit wird unentgeltlich jeder Person, die eine Kopie der Software und der zugehörigen Dokumentationen (die "Software") erhält, 
+ * die Erlaubnis erteilt, sie uneingeschränkt zu nutzen, inklusive und ohne Ausnahme mit dem Recht, sie zu verwenden, 
+ * zu kopieren, zu verändern, zusammenzufügen, zu veröffentlichen, zu verbreiten, zu unterlizenzieren und/oder zu verkaufen, 
+ * und Personen, denen diese Software überlassen wird, diese Rechte zu verschaffen, unter den folgenden Bedingungen:
+ * 
+ * Der obige Urheberrechtsvermerk und dieser Erlaubnisvermerk sind in allen Kopien oder Teilkopien der Software beizulegen.
+ * DIE SOFTWARE WIRD OHNE JEDE AUSDRÜCKLICHE ODER IMPLIZIERTE GARANTIE BEREITGESTELLT, 
+ * EINSCHLIESSLICH DER GARANTIE ZUR BENUTZUNG FÜR DEN VORGESEHENEN ODER EINEM BESTIMMTEN ZWECK SOWIE JEGLICHER RECHTSVERLETZUNG, 
+ * JEDOCH NICHT DARAUF BESCHRÄNKT. IN KEINEM FALL SIND DIE AUTOREN ODER COPYRIGHTINHABER FÜR JEGLICHEN SCHADEN ODER 
+ * SONSTIGE ANSPRÜCHE HAFTBAR ZU MACHEN, OB INFOLGE DER ERFÜLLUNG EINES VERTRAGES, 
+ * EINES DELIKTES ODER ANDERS IM ZUSAMMENHANG MIT DER SOFTWARE ODER SONSTIGER VERWENDUNG DER SOFTWARE ENTSTANDEN.
+ * 
  */
 #include <RCSwitch.h>
 RCSwitch mySwitch = RCSwitch();
+int Rec_Pin = 0; // 0 => Pin 2 (wird bei rc-switch so gezaehlt)
 int SW_Up = 1; // Switch Up
 int SW_Down = 0; // Switch Down
 int S1 = 4; // Switch Relais 1
@@ -77,7 +95,7 @@ void setup() {
   // Setze Status auf false
   S1_State = false;
   S2_State = false;
-  mySwitch.enableReceive(0); // 0 => Pin 2
+  mySwitch.enableReceive(Rec_Pin); // 0 => Pin 2
 }
 
 void SecRelais1(char mode){
