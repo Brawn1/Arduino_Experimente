@@ -13,6 +13,23 @@
  * Halogen Beleuchtung Bar Aussenbereich
  * Wohnzimmer Licht
  * Wohnzimmer Decken Flooter
+ 
+ * verdrahtung:
+ * RGB LED Strip
+ ** A1 - Red
+ ** A2 - Blue
+ ** A3 - Green
+ 
+ * 8 channel Relais with Optokoppler and 5V (Switching 230V/AC 10A)
+ * D2 - IN1 - Bar Innen
+ * D3 - IN2 - Bar Außenbereich
+ * D4 - IN3 - Stehlampe
+ * D5 - IN4 - PC Steckdosen
+ * D6 - IN5 - 
+ * D7 - IN6 - 
+ * D8 - IN7 -
+ * D9 - IN8 - 
+ 
 */
 
 // RGB Control
