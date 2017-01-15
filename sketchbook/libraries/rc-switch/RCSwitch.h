@@ -52,7 +52,7 @@
 
 // At least for the ATTiny X4/X5, receiving has to be disabled due to
 // missing libm depencies (udivmodhi4)
-#if defined( __AVR_ATtinyX5__ ) or defined ( __AVR_ATtinyX4__ )
+#if defined ( __AVR_ATtinyX4__ )
 #define RCSwitchDisableReceiving
 #endif
 
