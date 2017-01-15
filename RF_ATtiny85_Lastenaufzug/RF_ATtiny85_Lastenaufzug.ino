@@ -88,6 +88,7 @@ unsigned long relaistime = 60000L; // Schalte die Relais Versorgungsspannung nac
 unsigned long worktime = 10000L;
 
 void setup() {
+  //Serial.begin(115200);
   pinMode(RO, OUTPUT);
   pinMode(S1, OUTPUT);
   pinMode(S2, OUTPUT);
@@ -100,6 +101,7 @@ void setup() {
   S2_State = false;
   RO_State = false; // setze auf true da es auf HIGH gesetzt wurde
   mySwitch.enableReceive(0); // 0 => Pin 2
+  //Serial.println(F("End Setup and Start Programm"));
 }
 
 void SWRelais(char mode) {
@@ -107,6 +109,7 @@ void SWRelais(char mode) {
    * Versorgt das Relais mit Spannung ueber einen PNP Transistor
    */
   if (mode == "ON") {
+    //Serial.println(F("SWRelais ON"));
     if (RO_State == false) {
       // Schalte Versorgungspsannung am Relais EIN
       digitalWrite(RO, LOW);
@@ -126,14 +129,14 @@ void SecRelais1(char mode){
    * Secure Schalt Logic fuer Relais 1
    */
   if (mode == "ON") {
+    //Serial.println(F("SecRelais 1 ON"));
     if (S1_State == false && S2_State == false) {
       S1_State = true;
       digitalWrite(S1, LOW);
-      //Serial.println(F("SecRelais1 ON"));
     } else if (S1_State == false && S2_State == true) {
       digitalWrite(S2, HIGH);
       S2_State = false;
-      delay(150);
+      delay(80);
       S1_State = true;
       digitalWrite(S1, LOW);
     } else if (S1_State == true && S2_State == false) {
@@ -150,93 +153,69 @@ void SecRelais2(char mode){
    * Secure Schalt Logic fuer Relais 2
    */
   if (mode == "ON") {
+    //Serial.println(F("SecRelais 2 ON"));
     if (S2_State == false && S1_State == false) {
       S2_State = true;
       digitalWrite(S2, LOW);
-      //Serial.println(F("SecRelais2 ON"));
     } else if (S2_State == false && S1_State == true) {
       digitalWrite(S1, HIGH);
       S1_State = false;
-      //Serial.println(F("SecRelais1 OFF"));
-      delay(150);
+      delay(80);
       S2_State = true;
       digitalWrite(S2, LOW);
-      //Serial.println(F("SecRelais2 ON"));
     } else if (S2_State == true && S1_State == false) {
       // do nothing
     }
   } else {
     digitalWrite(S2, HIGH);
     S2_State = false;
-    //Serial.println(F("SecRelais2 OFF"));
   }
 }
 
-unsigned long millitask1 = 0;
-unsigned long millitask2 = 0;
+unsigned long task1 = 0;
+unsigned long task2 = 0;
 void loop() {
   unsigned long currmillis = millis();
-  /*
-  // Manueller Betrieb mit den Tastern
-  if ((unsigned long)(currmillis - millitask1) >= waittime || currmillis == 1000) {
-    millitask1 = millis();
-    while (digitalRead(SW_Down) == HIGH && digitalRead(SW_Up) == LOW) {
-     SecRelais2(ON);
-    }
-     
-    while (digitalRead(SW_Up) == HIGH && digitalRead(SW_Down) == LOW) {
-     SecRelais1(ON);
-    }
-
-    while (digitalRead(SW_Up) == HIGH && digitalRead(SW_Down) == HIGH) {
-     // if SW1 and SW2 High switch Secure Relais 1 and 2 OFF
-     SecRelais1(OFF);
-     SecRelais2(OFF);
-    }
-  }
-  */
+  
   // Betrieb ueber eine 433Mhz Fernbedienung mit den Kanaelen C & D
   if (mySwitch.available()) {
-    long unsigned int value = mySwitch.getReceivedValue();
-    if (value == 5592337) {
-      millitask2 = millis();
+    unsigned long value = mySwitch.getReceivedValue();
+    //Serial.print(F("Incoming Value = "));
+    //Serial.println(value);
+    if (value == 5592145 || value == 5592151 || value == 5570560) {
+      //Serial.println(F("Switch Relais 1 ON"));
+      task2 = millis();
       SWRelais("ON");
       SecRelais1("ON");
-    }
-    else if (value == 5592340) {
-      SecRelais1("OFF");
-      SecRelais2("OFF");
-      delay(150);
-    } 
-    else if (value == 5592145) {
-      millitask2 = millis();
+      
+    }else if (value == 5592337) {
+      //Serial.println(F("Switch Relais 2 ON"));
+      task2 = millis();
       SWRelais("ON");
       SecRelais2("ON");
-      //Serial.println(F("Switch Relais 2 ON"));
-    } 
-    else if (value == 5592148) {
+      
+    } else if (value == 5592148 || value == 5592064 || value == 5592340 || value == 5592407 || value == 5570560) {
+      //Serial.println(F("Switch Relais OFF"));
       SecRelais2("OFF");
       SecRelais1("OFF");
-      delay(150);
-    }  
-    else {
-      // do nothing
     }
-    
     mySwitch.resetAvailable();
-  }
-
-  // Wenn die Zeit (worktime) kleiner als die Vergangene Zeit ist, schalte ab.
-  if ((unsigned long)(currmillis - millitask2) >= worktime) {
-    if ( S1_State == true || S2_State == true ) {
-      SecRelais1("OFF");
-      SecRelais2("OFF");
-    }
+    //Serial.println(F("After resetAvailable"));
   }
   
+  // Wenn die Zeit (worktime) kleiner als die Vergangene Zeit ist, schalte ab.
+  if ((unsigned long)(currmillis - task2) >= worktime) {
+    if ( S1_State == true || S2_State == true ) {
+      //Serial.println(F("Switch after Worktime"));
+      SecRelais1("OFF");
+      SecRelais2("OFF");
+    }
+  }
+
   // schalte das Relais nach eingestellter Zeit aus
-  if ((unsigned long)(currmillis - millitask2) >= relaistime) {
+  if ((unsigned long)(currmillis - task2) >= relaistime) {
     if (RO_State == true) {
+      //Serial.println(F("Switch Relais unit off"));
       SWRelais("OFF");
     }
   }
