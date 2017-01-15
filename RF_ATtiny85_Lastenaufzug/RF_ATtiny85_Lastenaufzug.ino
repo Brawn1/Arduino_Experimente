@@ -71,56 +71,76 @@
  */
 #include <RCSwitch.h>
 RCSwitch mySwitch = RCSwitch();
-int Rec_Pin = 0; // 0 => Pin 2 (wird bei rc-switch so gezaehlt)
-int SW_Up = 1; // Switch Up
-int SW_Down = 0; // Switch Down
+int RO = 1; // LOW = Versorge Relais (VCC) mit Spannung HIGH = schalte Spannung ab (PNP Transistor)
 int S1 = 4; // Switch Relais 1
-int S2 = 5; // Switch Relais 2
+int S2 = 3; // Switch Relais 2
 // da bei ATtiny85 bereits alle Pins gebraucht werden, muessen wir uns mit einem Boolean Feld zufrieden geben.
 // die Boolean Felder sind fuer uns sozusagen der Ersatz von 2 zusaetzlichen Input Pins
 boolean S1_State = false;
 boolean S2_State = false;
-char mode[4]; // ein Reservierter Speicher fuer HIGH, LOW Schaltwert
+boolean RO_State = false;
+char mode[3]; // ein Reservierter Speicher fuer Modus ON / OFF
 int waittime = 1000; // Wartezeit zwischen dem Druecken der Taster (1 Sekunde)
+unsigned long relaistime = 60000L; // Schalte die Relais Versorgungsspannung nach 1min. ab
 // Wie lange das Relais den Status ON hat bis es wieder abgeschalten wird. Somit kann es
 // einen bestimmten Weg zuruecklegen.
 // unser Lastenaufzug schaft 6m pro Minute somit habe ich es auf 1m selbstfahren beschraenkt
-unsigned long worktime = 10000;
+unsigned long worktime = 10000L;
 
 void setup() {
-  //Serial.begin(115200);
-  pinMode(SW_Down, INPUT);
-  pinMode(SW_Up, INPUT);
+  pinMode(RO, OUTPUT);
   pinMode(S1, OUTPUT);
   pinMode(S2, OUTPUT);
-  // zur Sicherheit die Pins sofort auf LOW setzen um somit die Relais abzuschalten
-  pinMode(S1, LOW);
-  pinMode(S2, LOW);
+  // zur Sicherheit die Pins sofort auf HIGH setzen da das Relais mit LOW aktiv schaltet
+  digitalWrite(S1, HIGH);
+  digitalWrite(S2, HIGH);
+  digitalWrite(RO, HIGH); // Pin auf HIGH Setzen
   // Setze Status auf false
   S1_State = false;
   S2_State = false;
-  mySwitch.enableReceive(Rec_Pin); // 0 => Pin 2
+  RO_State = false; // setze auf true da es auf HIGH gesetzt wurde
+  mySwitch.enableReceive(0); // 0 => Pin 2
+}
+
+void SWRelais(char mode) {
+  /*
+   * Versorgt das Relais mit Spannung ueber einen PNP Transistor
+   */
+  if (mode == "ON") {
+    if (RO_State == false) {
+      // Schalte Versorgungspsannung am Relais EIN
+      digitalWrite(RO, LOW);
+      RO_State = true;
+    } else if (RO_State == true) {
+      // do nothing
+    }
+  } else {
+    // Sicherheitshalber bei Aufruf das Relais ausschalten
+    digitalWrite(RO, HIGH);
+    RO_State = false;
+  }
 }
 
 void SecRelais1(char mode){
   /*
    * Secure Schalt Logic fuer Relais 1
    */
-  if (mode == HIGH) {
+  if (mode == "ON") {
     if (S1_State == false && S2_State == false) {
       S1_State = true;
-      digitalWrite(S1, HIGH);
+      digitalWrite(S1, LOW);
+      //Serial.println(F("SecRelais1 ON"));
     } else if (S1_State == false && S2_State == true) {
-      digitalWrite(S2, LOW);
+      digitalWrite(S2, HIGH);
       S2_State = false;
       delay(150);
       S1_State = true;
-      digitalWrite(S1, HIGH);
+      digitalWrite(S1, LOW);
     } else if (S1_State == true && S2_State == false) {
       // do nothing
     }
   } else {
-    digitalWrite(S1, LOW);
+    digitalWrite(S1, HIGH);
     S1_State = false;
   }
 }
@@ -129,22 +149,26 @@ void SecRelais2(char mode){
   /*
    * Secure Schalt Logic fuer Relais 2
    */
-  if (mode == HIGH) {
+  if (mode == "ON") {
     if (S2_State == false && S1_State == false) {
       S2_State = true;
-      digitalWrite(S2, HIGH);
+      digitalWrite(S2, LOW);
+      //Serial.println(F("SecRelais2 ON"));
     } else if (S2_State == false && S1_State == true) {
-      digitalWrite(S1, LOW);
+      digitalWrite(S1, HIGH);
       S1_State = false;
+      //Serial.println(F("SecRelais1 OFF"));
       delay(150);
       S2_State = true;
-      digitalWrite(S2, HIGH);
+      digitalWrite(S2, LOW);
+      //Serial.println(F("SecRelais2 ON"));
     } else if (S2_State == true && S1_State == false) {
       // do nothing
     }
   } else {
-    digitalWrite(S2, LOW);
+    digitalWrite(S2, HIGH);
     S2_State = false;
+    //Serial.println(F("SecRelais2 OFF"));
   }
 }
 
@@ -152,63 +176,69 @@ unsigned long millitask1 = 0;
 unsigned long millitask2 = 0;
 void loop() {
   unsigned long currmillis = millis();
+  /*
   // Manueller Betrieb mit den Tastern
   if ((unsigned long)(currmillis - millitask1) >= waittime || currmillis == 1000) {
     millitask1 = millis();
     while (digitalRead(SW_Down) == HIGH && digitalRead(SW_Up) == LOW) {
-     SecRelais2(HIGH);
+     SecRelais2(ON);
     }
      
     while (digitalRead(SW_Up) == HIGH && digitalRead(SW_Down) == LOW) {
-     SecRelais1(HIGH);
+     SecRelais1(ON);
     }
 
     while (digitalRead(SW_Up) == HIGH && digitalRead(SW_Down) == HIGH) {
      // if SW1 and SW2 High switch Secure Relais 1 and 2 OFF
-     SecRelais1(LOW);
-     SecRelais2(LOW);
+     SecRelais1(OFF);
+     SecRelais2(OFF);
     }
-
-    SecRelais1(LOW);
-    SecRelais2(LOW);
   }
-
+  */
   // Betrieb ueber eine 433Mhz Fernbedienung mit den Kanaelen C & D
   if (mySwitch.available()) {
     long unsigned int value = mySwitch.getReceivedValue();
-
     if (value == 5592337) {
       millitask2 = millis();
-      SecRelais1(HIGH);
-      //Serial.println(F("Switch Relais 1 ON"));
+      SWRelais("ON");
+      SecRelais1("ON");
     }
     else if (value == 5592340) {
-      SecRelais1(LOW);
-      SecRelais2(LOW);
+      SecRelais1("OFF");
+      SecRelais2("OFF");
       delay(150);
-      //Serial.println(F("Switch Relais 1 OFF"));
     } 
     else if (value == 5592145) {
       millitask2 = millis();
-      SecRelais2(HIGH);
+      SWRelais("ON");
+      SecRelais2("ON");
       //Serial.println(F("Switch Relais 2 ON"));
     } 
     else if (value == 5592148) {
-      SecRelais2(LOW);
-      SecRelais1(LOW);
+      SecRelais2("OFF");
+      SecRelais1("OFF");
       delay(150);
-      //Serial.println(F("Switch Relais 2 OFF"));
     }  
     else {
       // do nothing
     }
+    
     mySwitch.resetAvailable();
   }
 
   // Wenn die Zeit (worktime) kleiner als die Vergangene Zeit ist, schalte ab.
   if ((unsigned long)(currmillis - millitask2) >= worktime) {
-    SecRelais1(LOW);
-    SecRelais2(LOW);
+    if ( S1_State == true || S2_State == true ) {
+      SecRelais1("OFF");
+      SecRelais2("OFF");
+    }
+  }
+  
+  // schalte das Relais nach eingestellter Zeit aus
+  if ((unsigned long)(currmillis - millitask2) >= relaistime) {
+    if (RO_State == true) {
+      SWRelais("OFF");
+    }
   }
 }
 
