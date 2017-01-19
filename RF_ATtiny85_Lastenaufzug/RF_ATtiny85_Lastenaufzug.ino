@@ -79,13 +79,13 @@ int S2 = 3; // Switch Relais 2
 boolean S1_State = false;
 boolean S2_State = false;
 boolean RO_State = false;
-char mode[3]; // ein Reservierter Speicher fuer Modus ON / OFF
-int waittime = 1000; // Wartezeit zwischen dem Druecken der Taster (1 Sekunde)
+char mode[4]; // ein Reservierter Speicher fuer Modus ON / OFF
+//int waittime = 1000; // Wartezeit zwischen dem Druecken der Taster (1 Sekunde)
 unsigned long relaistime = 60000L; // Schalte die Relais Versorgungsspannung nach 1min. ab
 // Wie lange das Relais den Status ON hat bis es wieder abgeschalten wird. Somit kann es
 // einen bestimmten Weg zuruecklegen.
 // unser Lastenaufzug schaft 6m pro Minute somit habe ich es auf 1m selbstfahren beschraenkt
-unsigned long worktime = 10000L;
+unsigned long worktime = 5000;
 
 void setup() {
   //Serial.begin(115200);
@@ -104,7 +104,7 @@ void setup() {
   //Serial.println(F("End Setup and Start Programm"));
 }
 
-void SWRelais(char mode) {
+void SWRelais(char mode){
   /*
    * Versorgt das Relais mit Spannung ueber einen PNP Transistor
    */
@@ -172,36 +172,42 @@ void SecRelais2(char mode){
   }
 }
 
-unsigned long task1 = 0;
+//unsigned long task1 = 0;
 unsigned long task2 = 0;
 void loop() {
   unsigned long currmillis = millis();
   
   // Betrieb ueber eine 433Mhz Fernbedienung mit den Kanaelen C & D
   if (mySwitch.available()) {
-    unsigned long value = mySwitch.getReceivedValue();
-    //Serial.print(F("Incoming Value = "));
-    //Serial.println(value);
-    if (value == 5592145 || value == 5592151 || value == 5570560) {
-      //Serial.println(F("Switch Relais 1 ON"));
-      task2 = millis();
-      SWRelais("ON");
-      SecRelais1("ON");
+    int value = mySwitch.getReceivedValue();
+    if ( value == 0 ){
+      //do nothing
+    } else {
+      //Serial.print(F("Incoming Value = "));
+      //Serial.println(value);
+      if (mySwitch.getReceivedValue() == 5592145 || mySwitch.getReceivedValue() == 5592151 || mySwitch.getReceivedValue() == 5570560) {
+        //Serial.println(F("Switch Relais 1 ON"));
+        task2 = millis();
+        SWRelais("ON");
+        SecRelais1("ON");
       
-    }else if (value == 5592337) {
-      //Serial.println(F("Switch Relais 2 ON"));
-      task2 = millis();
-      SWRelais("ON");
-      SecRelais2("ON");
+      } else if (mySwitch.getReceivedValue() == 5592337) {
+        //Serial.println(F("Switch Relais 2 ON"));
+        task2 = millis();
+        SWRelais("ON");
+        SecRelais2("ON");
       
-    } else if (value == 5592148 || value == 5592064 || value == 5592340 || value == 5592407 || value == 5570560) {
-      //Serial.println(F("Switch Relais OFF"));
-      SecRelais2("OFF");
-      SecRelais1("OFF");
+      } else if (mySwitch.getReceivedValue() == 5592148 || mySwitch.getReceivedValue() == 5592064 || mySwitch.getReceivedValue() == 5592340 || mySwitch.getReceivedValue() == 5592407 || mySwitch.getReceivedValue() == 5570560) {
+        //Serial.println(F("Switch Relais OFF"));
+        SecRelais2("OFF");
+        SecRelais1("OFF");
+      }
+      //mySwitch.resetAvailable();
+      //value = 0;
+      //Serial.println(F("After resetAvailable"));
     }
-    mySwitch.resetAvailable();
-    //Serial.println(F("After resetAvailable"));
   }
+  mySwitch.resetAvailable();
   
   // Wenn die Zeit (worktime) kleiner als die Vergangene Zeit ist, schalte ab.
   if ((unsigned long)(currmillis - task2) >= worktime) {
