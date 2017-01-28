@@ -60,7 +60,7 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 
 Eine kurze Darstellung der Pins vom AtTinyX5 Serie
 
-[Darstellung der Pins](Doku/attiny85_pinout.jpg)
+![Darstellung der Pins](Doku/attiny85_pinout.jpg)
 
 Das Offizielle Datenblatt von Atmel
 
