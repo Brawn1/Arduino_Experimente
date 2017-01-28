@@ -172,7 +172,6 @@ void SecRelais2(char mode){
   }
 }
 
-//unsigned long task1 = 0;
 unsigned long task2 = 0;
 void loop() {
   unsigned long currmillis = millis();
@@ -180,7 +179,7 @@ void loop() {
   // Betrieb ueber eine 433Mhz Fernbedienung mit den Kanaelen C & D
   if (mySwitch.available()) {
     int value = mySwitch.getReceivedValue();
-    if ( value == 0 ){
+    if ( value == 0 ) {
       //do nothing
     } else {
       //Serial.print(F("Incoming Value = "));
@@ -206,8 +205,8 @@ void loop() {
       //value = 0;
       //Serial.println(F("After resetAvailable"));
     }
+    mySwitch.resetAvailable();
   }
-  mySwitch.resetAvailable();
   
   // Wenn die Zeit (worktime) kleiner als die Vergangene Zeit ist, schalte ab.
   if ((unsigned long)(currmillis - task2) >= worktime) {
