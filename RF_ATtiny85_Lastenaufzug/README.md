@@ -1,5 +1,7 @@
 # RF AtTiny85 gesteuerter Lastenaufzug
 
+**Anleitung in Arbeit**
+
 ## Kurze Einleitung
 
 Da wir gerne Grillen aber die Sachen vom 1.OG jedesmal hinunter und 
@@ -41,7 +43,7 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 
 ![Verdrahtung AtTiny85](Doku/Schaltplan.jpg)
 
-* Die Pins vom AtTiny85 werden wie dargestellt verwendet:
+**Die Pins vom AtTiny85 werden wie dargestellt verwendet:**
 
 *PB1* -> aktivierung Spannungsversorgung vom Relais über PNP Transistor
 
@@ -65,7 +67,6 @@ Eine kurze Darstellung der Pins vom AtTinyX5 Serie
 Das Offizielle Datenblatt von Atmel
 
 [PDF Datasheet AtTiny25 - 85](Doku/Atmel-2586-AVR-8-bit-Microcontroller-ATtiny25-ATtiny45-ATtiny85_Datasheet.pdf)
-
 
 ## Quellen
 
