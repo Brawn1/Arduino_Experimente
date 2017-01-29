@@ -46,6 +46,7 @@ aktiv sind, aber man muss es ja nicht fordern.
 * 1x 433Mhz Empfänger (E-Bay um ca. 2,50 € (Sender & Empfänger)
 * 1x AtTiny85 (für die Steuerung)
 * 1x Transistor PNP
+* 1x 800 Ohm Widerstand
 * 1x 2-Fach Relais (Bei E-Bay um ca. 5 €) *Achtung: ich habe aus 
 versehen die Relais mit Optokopler gekauft, somit muss ich zum 
 Abschalten der Relais die Ports auf HIGH setzen.*
