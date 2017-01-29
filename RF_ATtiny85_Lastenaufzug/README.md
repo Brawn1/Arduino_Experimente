@@ -59,6 +59,8 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 
 **Die Pins vom AtTiny85 werden wie dargestellt verwendet:**
 
+---
+
 *PB1* -> aktivierung Spannungsversorgung vom Relais über PNP Transistor
 *PB2* -> *DATA* RF-Empfänger
 *PB3* -> *IN1* Relais 1
@@ -73,7 +75,7 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 ![2-Fach Relais](Doku/DSC_1585.JPG)
 
 **Schaltung Verdrahtet und an das Relais angeschlossen**
-![Schaltung Verdrahtet](Doku/DSC_1686.JPG)
+![Schaltung Verdrahtet](Doku/DSC_1586.JPG)
 
 
 ## Erklärung Sketch
