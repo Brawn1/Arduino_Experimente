@@ -63,12 +63,12 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 
 ---
 
-*PB1* -> aktivierung Spannungsversorgung vom Relais über PNP Transistor
-*PB2* -> *DATA* RF-Empfänger
-*PB3* -> *IN1* Relais 1
-*PB4* -> *IN2* Relais 2
-*VIN* -> max. 5,5 VDC
-*GND* -> GND
+* *PB1* -> aktivierung Spannungsversorgung vom Relais über PNP Transistor
+* *PB2* -> *DATA* RF-Empfänger
+* *PB3* -> *IN1* Relais 1
+* *PB4* -> *IN2* Relais 2
+* *VIN* -> max. 5,5 VDC
+* *GND* -> GND
 
 **433 Mhz Empfänger Aufgelötet**
 ![433Mhz Empfänger Aufgelötet](Doku/DSC_1584.JPG)
