@@ -31,8 +31,6 @@
  * DATA (433Mhz Empfang) = Pin2
  * Relais 1 = Pin3
  * Relais 2 = Pin4
- * SW_Up = Pin1
- * SW_Down = Pin0
  * 
  * Info:
  * Falls ein anderer Arduino Controller verwendet wird, muss man die Pins anpassen.
@@ -72,23 +70,25 @@
 #include <RCSwitch.h>
 RCSwitch mySwitch = RCSwitch();
 int RO = 1; // LOW = Versorge Relais (VCC) mit Spannung HIGH = schalte Spannung ab (PNP Transistor)
-int S1 = 4; // Switch Relais 1
-int S2 = 3; // Switch Relais 2
+int S1 = 4; // Relais 1
+int S2 = 3; // Relais 2
 // da bei ATtiny85 bereits alle Pins gebraucht werden, muessen wir uns mit einem Boolean Feld zufrieden geben.
 // die Boolean Felder sind fuer uns sozusagen der Ersatz von 2 zusaetzlichen Input Pins
 boolean S1_State = false;
 boolean S2_State = false;
 boolean RO_State = false;
 char mode[4]; // ein Reservierter Speicher fuer Modus ON / OFF
+
 //int waittime = 1000; // Wartezeit zwischen dem Druecken der Taster (1 Sekunde)
-unsigned long relaistime = 60000L; // Schalte die Relais Versorgungsspannung nach 1min. ab
+
+unsigned long relaistime = 60000L; // Schalte die Relais Versorgungsspannung nach 1min. ab.
+
 // Wie lange das Relais den Status ON hat bis es wieder abgeschalten wird. Somit kann es
 // einen bestimmten Weg zuruecklegen.
 // unser Lastenaufzug schaft 6m pro Minute somit habe ich es auf 1m selbstfahren beschraenkt
 unsigned long worktime = 5000;
 
 void setup() {
-  //Serial.begin(115200);
   pinMode(RO, OUTPUT);
   pinMode(S1, OUTPUT);
   pinMode(S2, OUTPUT);
@@ -101,7 +101,6 @@ void setup() {
   S2_State = false;
   RO_State = false; // setze auf true da es auf HIGH gesetzt wurde
   mySwitch.enableReceive(0); // 0 => Pin 2
-  //Serial.println(F("End Setup and Start Programm"));
 }
 
 void SWRelais(char mode){
@@ -109,7 +108,6 @@ void SWRelais(char mode){
    * Versorgt das Relais mit Spannung ueber einen PNP Transistor
    */
   if (mode == "ON") {
-    //Serial.println(F("SWRelais ON"));
     if (RO_State == false) {
       // Schalte Versorgungspsannung am Relais EIN
       digitalWrite(RO, LOW);
@@ -129,7 +127,6 @@ void SecRelais1(char mode){
    * Secure Schalt Logic fuer Relais 1
    */
   if (mode == "ON") {
-    //Serial.println(F("SecRelais 1 ON"));
     if (S1_State == false && S2_State == false) {
       S1_State = true;
       digitalWrite(S1, LOW);
@@ -153,7 +150,6 @@ void SecRelais2(char mode){
    * Secure Schalt Logic fuer Relais 2
    */
   if (mode == "ON") {
-    //Serial.println(F("SecRelais 2 ON"));
     if (S2_State == false && S1_State == false) {
       S2_State = true;
       digitalWrite(S2, LOW);
@@ -182,28 +178,20 @@ void loop() {
     if ( value == 0 ) {
       //do nothing
     } else {
-      //Serial.print(F("Incoming Value = "));
-      //Serial.println(value);
       if (mySwitch.getReceivedValue() == 5592145 || mySwitch.getReceivedValue() == 5592151 || mySwitch.getReceivedValue() == 5570560) {
-        //Serial.println(F("Switch Relais 1 ON"));
         task2 = millis();
         SWRelais("ON");
         SecRelais1("ON");
       
       } else if (mySwitch.getReceivedValue() == 5592337) {
-        //Serial.println(F("Switch Relais 2 ON"));
         task2 = millis();
         SWRelais("ON");
         SecRelais2("ON");
       
       } else if (mySwitch.getReceivedValue() == 5592148 || mySwitch.getReceivedValue() == 5592064 || mySwitch.getReceivedValue() == 5592340 || mySwitch.getReceivedValue() == 5592407 || mySwitch.getReceivedValue() == 5570560) {
-        //Serial.println(F("Switch Relais OFF"));
         SecRelais2("OFF");
         SecRelais1("OFF");
       }
-      //mySwitch.resetAvailable();
-      //value = 0;
-      //Serial.println(F("After resetAvailable"));
     }
     mySwitch.resetAvailable();
   }
@@ -211,7 +199,6 @@ void loop() {
   // Wenn die Zeit (worktime) kleiner als die Vergangene Zeit ist, schalte ab.
   if ((unsigned long)(currmillis - task2) >= worktime) {
     if ( S1_State == true || S2_State == true ) {
-      //Serial.println(F("Switch after Worktime"));
       SecRelais1("OFF");
       SecRelais2("OFF");
     }
@@ -220,7 +207,6 @@ void loop() {
   // schalte das Relais nach eingestellter Zeit aus
   if ((unsigned long)(currmillis - task2) >= relaistime) {
     if (RO_State == true) {
-      //Serial.println(F("Switch Relais unit off"));
       SWRelais("OFF");
     }
   }
