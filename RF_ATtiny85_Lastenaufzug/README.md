@@ -74,6 +74,7 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 ![433Mhz Empfänger Aufgelötet](Doku/DSC_1584.JPG)
 
 **2-Fach Relais**
+
 **Info:** Falls eines gekauft werden muss, würde ich diese mit den 
 Optokoplern nicht mehr für so ein Projekt empfehlen. 
 Da nur mit *HIGH* das Relais abgeschaltet wird.
