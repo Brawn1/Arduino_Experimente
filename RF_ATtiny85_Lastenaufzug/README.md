@@ -57,6 +57,8 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 
 ![Verdrahtung AtTiny85](Doku/Schaltplan.jpg)
 
+---
+
 **Die Pins vom AtTiny85 werden wie dargestellt verwendet:**
 
 ---
