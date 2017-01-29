@@ -175,17 +175,18 @@ void loop() {
     if ( value == 0 ) {
       //do nothing
     } else {
-      if (mySwitch.getReceivedValue() == 5592145 || mySwitch.getReceivedValue() == 5592151 || mySwitch.getReceivedValue() == 5570560) {
+      unsigned long rec_value = mySwitch.getReceivedValue();
+      if (rec_value == 5592145 || rec_value == 5592151 || rec_value == 5570560) {
         task2 = millis();
         SWRelais("ON");
         SecRelais1("ON");
       
-      } else if (mySwitch.getReceivedValue() == 5592337) {
+      } else if (rec_value == 5592337) {
         task2 = millis();
         SWRelais("ON");
         SecRelais2("ON");
       
-      } else if (mySwitch.getReceivedValue() == 5592148 || mySwitch.getReceivedValue() == 5592064 || mySwitch.getReceivedValue() == 5592340 || mySwitch.getReceivedValue() == 5592407 || mySwitch.getReceivedValue() == 5570560) {
+      } else if (rec_value == 5592148 || rec_value == 5592064 || rec_value == 5592340 || rec_value == 5592407 || rec_value == 5570560) {
         SecRelais2("OFF");
         SecRelais1("OFF");
       }
