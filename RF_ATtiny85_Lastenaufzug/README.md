@@ -2,8 +2,6 @@
 
 **Anleitung in Arbeit**
 
-## Kurze Einleitung
-
 Da wir gerne Grillen aber die Sachen vom 1.OG jedesmal hinunter und 
 wieder rauftragen müssen, haben wir uns entschlossen 
 eine Seilwinde die noch in der Garage lag unter dem Balkon im 2.OG zu 
@@ -13,25 +11,41 @@ Die Montage war einfach, aber leider stellte sich heraus das die
 Seilwinde sehr Langsam ist, und man die nur mit einem 2m Kabel vom 1.OG 
 bedienen konnte.
 
-Also habe ich mir überlegt dies mit einem Funksystem zu lösen, aber 
-damit nicht extra eine Fernbedinung entworfen werden muss, verwende ich 
-einen vorhandenen 433Mhz Sender für Funksteckdosen.
+Also habe ich mir überlegt dies per Microcontroller über Funk zu 
+Steuern.
 
-Dabei sind noch die 2 Kanäle C & D bei dem Sender Frei.
+Da der Microcontroller keine hohe Lasten schalten kann, Steuere ich 
+damit 2 Wechselrelais an.
+Die Relais werden auf der 230VAC Seite so verdrahtet, dass auch bei 
+einem Stecken von einem Relais immer nur eines aktiv sein kann.
+Ob das jetzt das Relais für Rauf oder Runter ist kommt von der 
+Sicherheit darauf an (bei mir ist es Rauf da sonst der Motor keinen
+Abschaltpunkt hat).
 
-Damit es auch nur auf die 4 Taster am Sender Funktioniert und nicht 
-durch irgendein anderes Signal aktiviert wird, habe ich den Code mit 
-dem Arduino UNO ausgelesen.
+**Tipp:**
+Wenn man mehr Geld Investieren möchte, wäre ein Sicherheitsrelais 
+(Schütz) dafür besser vorgesehen. Da es aber Privat ist und der 
+Lastenaufzug gerade mal ca. 10x im Jahr genutzt wird, ist das nicht so 
+schlimm. (über Winter wird es vom Netz getrennt).
+
+Damit auch der Lastenaufzug vor Ort Manuell bedient werden kann, sind 
+auch noch 2 Taster (Rauf, Runter) am Kasten montiert.
+
+Da es sehr viel mit 433Mhz Fernbedinung gibt, habe ich zuerst den Code 
+von der FB Ausgelesen und es in die Konditionen im Loop eingebaut.
+Zum Empfangen hat sich die Lib RC-Switch am besten bewährt.
+
+Da die Relais eher Träge sind, wird zur Sicherheit zwischen dem 
+Umschalten 80ms gewartet.
+Es würde zwar durch die Verdrahtung nichts machen wenn beide Relais 
+aktiv sind, aber man muss es ja nicht fordern.
 
 
 ## Benötigte Teile
 
 * 1x 433Mhz Empfänger (E-Bay um ca. 2,50 € (Sender & Empfänger)
-
 * 1x AtTiny85 (für die Steuerung)
-
 * 1x Transistor PNP
-
 * 1x 2-Fach Relais (Bei E-Bay um ca. 5 €) *Achtung: ich habe aus 
 versehen die Relais mit Optokopler gekauft, somit muss ich zum 
 Abschalten der Relais die Ports auf HIGH setzen.*
@@ -46,16 +60,17 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 **Die Pins vom AtTiny85 werden wie dargestellt verwendet:**
 
 *PB1* -> aktivierung Spannungsversorgung vom Relais über PNP Transistor
-
 *PB2* -> *DATA* RF-Empfänger
-
 *PB3* -> *IN1* Relais 1
-
 *PB4* -> *IN2* Relais 2
-
 *VIN* -> max. 5,5 VDC
-
 *GND* -> GND
+
+## Erklärung Code
+
+
+```Arduino
+
 
 
 ## AtTinyX5 Pins und Datenblatt
