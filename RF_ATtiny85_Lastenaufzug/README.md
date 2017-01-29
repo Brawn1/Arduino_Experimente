@@ -66,12 +66,59 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 *VIN* -> max. 5,5 VDC
 *GND* -> GND
 
-## Erklärung Code
+## Erklärung Sketch
 
 
 ```Arduino
+int RO = 1; // LOW = Versorge Relais (VCC) mit Spannung HIGH = schalte Spannung ab (PNP Transistor)
+int S1 = 4; // Relais 1
+int S2 = 3; // Relais 2
+```
 
+Da bei ATtiny85 bereits alle Pins gebraucht werden, muessen wir uns mit 
+einem Boolean Feld zufrieden geben.
+Die Boolean Felder sind fuer uns sozusagen der Ersatz von 2 
+zusaetzlichen Input Pins.
+```Arduino
+boolean S1_State = false;
+boolean S2_State = false;
+boolean RO_State = false;
+```
 
+Schalte die Relais Versorgungsspannung nach 1min. ab.
+```Arduino
+unsigned long relaistime = 60000L;
+```
+
+Wie lange das Relais den Status ON hat bis es wieder abgeschalten wird. 
+Somit kann es einen bestimmten Weg zuruecklegen.
+Unser Lastenaufzug schaft 6m pro Minute somit habe ich es auf 1m 
+selbstfahren beschraenkt 
+```Arduino
+unsigned long worktime = 5000;
+```
+
+Zur Sicherheit die Pins sofort auf HIGH setzen da das Relais mit LOW 
+aktiv schaltet (Sozusagen schalten wir das Relais gleich ab).
+```Arduino
+void setup() {
+  ...
+  digitalWrite(S1, HIGH);
+  digitalWrite(S2, HIGH);
+  digitalWrite(RO, HIGH);
+  ...
+  mySwitch.enableReceive(0); // 0 => Pin 2
+}
+```
+
+Aktiviere den Empfang auf den Interrupt *Pin0* => ist bei Arduino Pin2.
+```Arduino
+void setup() {
+  ...
+  ...
+  mySwitch.enableReceive(0); // 0 => Pin 2
+}
+```
 
 ## AtTinyX5 Pins und Datenblatt
 

@@ -79,11 +79,7 @@ boolean S1_State = false;
 boolean S2_State = false;
 boolean RO_State = false;
 char mode[4]; // ein Reservierter Speicher fuer Modus ON / OFF
-
-//int waittime = 1000; // Wartezeit zwischen dem Druecken der Taster (1 Sekunde)
-
 unsigned long relaistime = 60000L; // Schalte die Relais Versorgungsspannung nach 1min. ab.
-
 // Wie lange das Relais den Status ON hat bis es wieder abgeschalten wird. Somit kann es
 // einen bestimmten Weg zuruecklegen.
 // unser Lastenaufzug schaft 6m pro Minute somit habe ich es auf 1m selbstfahren beschraenkt
