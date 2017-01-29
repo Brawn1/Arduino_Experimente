@@ -28,9 +28,10 @@
  * ---------
  * VCC = 5V
  * GND = GND
- * DATA (433Mhz Empfang) = Pin2
- * Relais 1 = Pin3
- * Relais 2 = Pin4
+ * PB1 = Transistor (PNP)
+ * PB2 = DATA (433Mhz Empfänger)
+ * PB3 = Relais 1
+ * PB4 = Relais 2
  * 
  * Info:
  * Falls ein anderer Arduino Controller verwendet wird, muss man die Pins anpassen.
