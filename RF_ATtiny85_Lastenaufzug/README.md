@@ -56,6 +56,11 @@ Abschalten der Relais die Ports auf HIGH setzen.*
 Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 
 ![Verdrahtung AtTiny85](Doku/Schaltplan.jpg)
+Wie man sieht verwende ich einen Widerstand von ca. 800 Ohm für den 
+Transistor, somit habe ich für die Relais genau 5,5VDC.
+
+So als Startpunkt sollte man einen 1KOhm Widerstand verwenden und es mit 
+einem Multimeter nachmessen.
 
 ---
 
