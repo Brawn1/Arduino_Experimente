@@ -66,6 +66,16 @@ Die Verdrahtung ist dank dem AtTiny85 sehr einfach.
 *VIN* -> max. 5,5 VDC
 *GND* -> GND
 
+**433 Mhz Empfänger Aufgelötet**
+![433Mhz Empfänger Aufgelötet](Doku/DSC_1584.JPG)
+
+**2-Fach Relais**
+![2-Fach Relais](Doku/DSC_1585.JPG)
+
+**Schaltung Verdrahtet und an das Relais angeschlossen**
+![Schaltung Verdrahtet](Doku/DSC_1686.JPG)
+
+
 ## Erklärung Sketch
 
 
