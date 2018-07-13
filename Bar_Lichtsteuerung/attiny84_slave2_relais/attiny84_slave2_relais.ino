@@ -20,7 +20,7 @@
  * 
  * 
  *  7 - Activity LED
- * 
+ * version 0.8
 */
 #include <TinyWireS.h>
 #include <RelaisControl.h>
@@ -42,7 +42,7 @@ byte R6 = 10;
 byte R7 = 9;
 byte R8 = 8;
 // init relais
-relais relais(R1, R2, R3, R4, R5, R6, R7, R8);
+relais relais(R1, R2, R3, R4, R5, R6, R7, R8, true);
 
 // activity LED
 byte ACTLED = 7;
@@ -156,7 +156,7 @@ void procWireData(int index){
   }
 
   if(strcmp(topic, "relais2")==0){
-    if(strcmp(value, "true")==0){
+    if(strcmp(value, "1")==0){
       relais.ON(R2);
     } else {
       relais.OFF(R2);
@@ -226,6 +226,12 @@ void procWireData(int index){
   
   clsrxChar();
   act();
+  // check if relais active
+  if(relais.ACTIVE()){
+    act(true);
+  } else {
+    act();
+  }
   wdt_reset();
 }
 

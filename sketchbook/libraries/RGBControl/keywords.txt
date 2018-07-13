@@ -1,0 +1,13 @@
+rgb KEYWORD1
+green KEYWORD2
+blue KEYWORD2
+red KEYWORD2
+white KEYWORD2
+fade_blue KEYWORD2
+fade_green KEYWORD2
+fade_red KEYWORD2
+switch_rgb_strip KEYWORD2
+fade_rgb_up_down KEYWORD2
+red_light KEYWORD2
+green_light KEYWORD2
+setcolor KEYWORD2
